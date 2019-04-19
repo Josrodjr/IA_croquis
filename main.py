@@ -3,6 +3,7 @@ import PIL
 from PIL import Image, ImageDraw
 import pickle
 
+
 def activate_paint(e):
     global lastx, lasty
     cv.bind('<B1-Motion>', paint)
@@ -20,8 +21,8 @@ def paint(e):
 
 def save():
     # global image_number
-    img_pkl_number = pickle.load( open("save.p", "rb"))
-    filename = f'img_{img_pkl_number}.bmp'
+    img_pkl_number = pickle.load(open("save.p", "rb"))
+    filename = f'sad_{img_pkl_number}.bmp'
     # save the file
     image1.save(filename)
     # resize the image based on the width (REQUIRED TO BE SQUARE)
