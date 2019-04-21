@@ -19,10 +19,26 @@ def paint(e):
     lastx, lasty = x, y
 
 
+def activate_circle(e):
+    global lastx, lasty
+    cv.bind('<ButtonRelease-3>', circle)
+    lastx, lasty = e.x, e.y
+
+
+def circle(e):
+    global lastx, lasty
+    x, y = e.x, e.y
+    cv.create_oval((lastx, lasty, x, y), width=1, fill="black")
+    #  --- PIL
+    draw.ellipse((lastx, lasty, x, y), fill='black', width=35)
+    # draw.line((lastx, lasty, x, y), fill='black', width=35)
+    lastx, lasty = x, y
+
+
 def save():
     # global image_number
     img_pkl_number = pickle.load(open("save.p", "rb"))
-    filename = f'sad_{img_pkl_number}.bmp'
+    filename = f'img_{img_pkl_number}.bmp'
     # save the file
     image1.save(filename)
     # resize the image based on the width (REQUIRED TO BE SQUARE)
@@ -64,6 +80,7 @@ image1 = PIL.Image.new('RGB', (560, 560), 'white')
 draw = ImageDraw.Draw(image1)
 
 cv.bind('<1>', activate_paint)
+cv.bind('<3>', activate_circle)
 cv.pack(expand=YES, fill=BOTH)
 
 btn_save = Button(text="save", command=save)
