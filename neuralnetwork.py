@@ -1,90 +1,87 @@
-import numpy as np  
-import matplotlib.pyplot as plt
+import numpy 
+import matplotlib.pyplot as pyplot
+import pickle
 
-np.random.seed(42)
+# local library for the neuralnetwork methods
+from neural_lib import images_to_pickle, feedforward, backpropagation, weight_update, sigmoid
 
-cat_images = np.random.randn(700, 2) + np.array([0, -3])  
-mouse_images = np.random.randn(700, 2) + np.array([3, 3])  
-dog_images = np.random.randn(700, 2) + np.array([-3, 3])
+# set a randomseed
+numpy.random.seed(69)
 
-feature_set = np.vstack([cat_images, mouse_images, dog_images])
+# numpy.seterr(divide='ignore', invalid='ignore')
+# numpy.warnings.filterwarnings('ignore')
 
-labels = np.array([0]*700 + [1]*700 + [2]*700)
+# ******************************* HUEVO ************************************
+# get all files in a path
+mypath = r"C:\Users\Josro\Documents\GitHub\IA_croquis\training\huevo"
+savename = f"huevo.p"
 
-one_hot_labels = np.zeros((2100, 3))
+images_to_pickle(mypath, savename)
+images_vector_huevo = pickle.load(open(savename, "rb"))
 
-for i in range(2100):  
-    one_hot_labels[i, labels[i]] = 1
+# ******************************* MICKEY ***********************************
+# get all files in a path
+mypath = r"C:\Users\Josro\Documents\GitHub\IA_croquis\training\mickey"
+savename = f"mickey.p"
 
-plt.figure(figsize=(10,7))  
-plt.scatter(feature_set[:,0], feature_set[:,1], c=labels, cmap='plasma', s=100, alpha=0.5)  
-plt.show()
+images_to_pickle(mypath, savename)
+images_vector_mickey = pickle.load(open(savename, "rb"))
 
-def sigmoid(x):  
-    return 1/(1+np.exp(-x))
+# ******************************* FELIZ ************************************
+# get all files in a path
+mypath = r"C:\Users\Josro\Documents\GitHub\IA_croquis\training\feliz"
+savename = f"feliz.p"
 
-def sigmoid_der(x):  
-    return sigmoid(x) *(1-sigmoid (x))
+images_to_pickle(mypath, savename)
+images_vector_feliz = pickle.load(open(savename, "rb"))
 
-def softmax(A):  
-    expA = np.exp(A)
-    return expA / expA.sum(axis=1, keepdims=True)
+# ***************************** ACTUAL NN **********************************
 
-instances = feature_set.shape[0]  
-attributes = feature_set.shape[1]  
-hidden_nodes = 4  
+# actual 0 = huevo, 1 = mickey, 2 = feliz
+labels_for_data = numpy.array([0]*251 + [1]*251 + [2]*251)
+
+ones_labels = numpy.zeros((753, 3))
+
+for i in range(len(ones_labels)):
+    ones_labels[i, labels_for_data[i]] = 1
+
+feature_set = numpy.vstack([images_vector_huevo, images_vector_mickey, images_vector_feliz])
+
+# get the number of rows
+instances = feature_set.shape[0]
+# get the number of columns
+attributes = feature_set.shape[1]
+# neural network size
+hidden_nodes = 784
 output_labels = 3
 
-wh = np.random.rand(attributes,hidden_nodes)  
-bh = np.random.randn(hidden_nodes)
+wh = numpy.random.rand(attributes, hidden_nodes)
+bh = numpy.random.randn(hidden_nodes)
 
-wo = np.random.rand(hidden_nodes,output_labels)  
-bo = np.random.randn(output_labels)  
-lr = 10e-4
+wo = numpy.random.rand(hidden_nodes, output_labels)
+bo = numpy.random.randn(output_labels)
+lr = 0.001
 
 error_cost = []
 
-for epoch in range(50000):  
-############# feedforward
-
-    # Phase 1
-    zh = np.dot(feature_set, wh) + bh
-    ah = sigmoid(zh)
-
-    # Phase 2
-    zo = np.dot(ah, wo) + bo
-    ao = softmax(zo)
-
-########## Back Propagation
-
-########## Phase 1
-
-    dcost_dzo = ao - one_hot_labels
-    dzo_dwo = ah
-
-    dcost_wo = np.dot(dzo_dwo.T, dcost_dzo)
-
-    dcost_bo = dcost_dzo
-
-########## Phases 2
-
-    dzo_dah = wo
-    dcost_dah = np.dot(dcost_dzo , dzo_dah.T)
-    dah_dzh = sigmoid_der(zh)
-    dzh_dwh = feature_set
-    dcost_wh = np.dot(dzh_dwh.T, dah_dzh * dcost_dah)
-
-    dcost_bh = dcost_dah * dah_dzh
-
-    # Update Weights ================
-
-    wh -= lr * dcost_wh
-    bh -= lr * dcost_bh.sum(axis=0)
-
-    wo -= lr * dcost_wo
-    bo -= lr * dcost_bo.sum(axis=0)
+for epoch in range(5000):
+    # do feedforward
+    ao, ah, zo, zh = feedforward(feature_set, wh, bh, wo, bo)
+    # do backpropagation
+    dcost_wo, dcost_bo, dcost_wh, dcost_bh = backpropagation(feature_set, ones_labels, ao, ah, wo, zh)
+    # update the weighs
+    wh, bh, wo, bo = weight_update(wh, dcost_wh, bh, dcost_bh, wo, dcost_wo, bo, dcost_bo, lr)
 
     if epoch % 200 == 0:
-        loss = np.sum(-one_hot_labels * np.log(ao))
+        ao = numpy.nan_to_num(ao)
+        loss = numpy.sum(-ones_labels * numpy.log(ao))
         print('Loss function value: ', loss)
         error_cost.append(loss)
+
+# test this zhisnit
+result = sigmoid(numpy.dot(images_vector_mickey[150], wo) + bo)
+print(result)
+
+# def feedforward(feature_set, wh, bh, wo, bo):          return (ao, ah, zo, zh)
+# def backpropagation(feature_set, one_hot_labels, ao, ah, wo, zh):             return (dcost_wo, dcost_bo, dcost_wh, dcost_bh)
+# def weight_update(wh, dcost_wh, bh, dcost_bh, wo, dcost_wo, bo, dcost_bo, lr):           return (wh, bh, wo, bo)
