@@ -68,6 +68,10 @@ def weight_update(wh, dcost_wh, bh, dcost_bh, wo, dcost_wo, bo, dcost_bo, lr):
     return (wh, bh, wo, bo)
 
 
+def feed_forward2():
+    return 0
+
+
 def images_to_pickle(path, s_name):
     onlyfiles = [fil for fil in listdir(path) if isfile(join(path, fil))]
     # iterate said array so we get all files into Black white arrays
@@ -83,8 +87,13 @@ def images_to_pickle(path, s_name):
         gray = img.convert('L')
         # Numpy for comverting the pixels into pure white (255) and black (0)
         black_white = numpy.asarray(gray).copy()
-        black_white[black_white < 128] = 0
-        black_white[black_white >= 128] = 255
+        # using the grays
+        
+        # < -------------- 0 or 255 IMPORTANT ---------------- >
+
+        # black_white[black_white < 128] = 0
+        # black_white[black_white >= 128] = 255
+
         # make sure that the image is exactly the 28*28 size (784)
         # print(black_white.size)
         # concatenate every column of the image into a single array

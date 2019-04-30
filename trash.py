@@ -49,3 +49,50 @@ print(result)
 
 
 test(0,0,1,0)
+
+# LO VERDADERAMENTE SAD
+
+# actual 0 = huevo, 1 = mickey, 2 = feliz
+labels_for_data = numpy.array([0]*251 + [1]*251 + [2]*251)
+
+ones_labels = numpy.zeros((753, 3))
+
+for i in range(len(ones_labels)):
+    ones_labels[i, labels_for_data[i]] = 1
+
+feature_set = numpy.vstack([images_vector_huevo, images_vector_mickey, images_vector_feliz])
+
+# get the number of rows
+instances = feature_set.shape[0]
+# get the number of columns
+attributes = feature_set.shape[1]
+# neural network size
+hidden_nodes = 784
+output_labels = 3
+
+wh = numpy.random.rand(attributes, hidden_nodes)
+bh = numpy.random.randn(hidden_nodes)
+
+wo = numpy.random.rand(hidden_nodes, output_labels)
+bo = numpy.random.randn(output_labels)
+lr = 0.001
+
+error_cost = []
+
+for epoch in range(5000):
+    # do feedforward
+    ao, ah, zo, zh = feedforward(feature_set, wh, bh, wo, bo)
+    # do backpropagation
+    dcost_wo, dcost_bo, dcost_wh, dcost_bh = backpropagation(feature_set, ones_labels, ao, ah, wo, zh)
+    # update the weighs
+    wh, bh, wo, bo = weight_update(wh, dcost_wh, bh, dcost_bh, wo, dcost_wo, bo, dcost_bo, lr)
+
+    if epoch % 200 == 0:
+        ao = numpy.nan_to_num(ao)
+        loss = numpy.sum(-ones_labels * numpy.log(ao))
+        print('Loss function value: ', loss)
+        error_cost.append(loss)
+
+# test this zhisnit
+result = sigmoid(numpy.dot(images_vector_mickey[150], wo) + bo)
+print(result)
