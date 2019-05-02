@@ -68,10 +68,6 @@ def weight_update(wh, dcost_wh, bh, dcost_bh, wo, dcost_wo, bo, dcost_bo, lr):
     return (wh, bh, wo, bo)
 
 
-def feed_forward2():
-    return 0
-
-
 def images_to_pickle(path, s_name):
     onlyfiles = [fil for fil in listdir(path) if isfile(join(path, fil))]
     # iterate said array so we get all files into Black white arrays
@@ -102,3 +98,67 @@ def images_to_pickle(path, s_name):
         images_vector.append(single_array)
     # dump the compelte data for acess later
     pickle.dump(images_vector, open(s_name, "wb"))
+
+# Another try for a neuralnet forward back gradientdescent
+
+
+def starter_bias(H_size, O_size):
+    Hidden_bias = numpy.full((1 ,H_size), 0.1)
+    Output_bias = numpy.full((1 ,O_size), 0.1)
+    return Hidden_bias, Output_bias
+
+
+# funcion de activacion ReLU
+def ReLU(vector_tbw):
+    return numpy.maximum(0, vector_tbw)
+
+
+# derivada de funcion de activacion ReLU
+def derivada_ReLU(vector_tbw):
+    vector_tbw[vector_tbw < 0] = 0
+    vector_tbw[vector_tbw > 1] = 1
+    return vector_tbw
+
+
+def costo(predicciones, output_layer):
+    costo = numpy.sum((predicciones -  output_layer) ** 2 / y.size)
+    return costo
+
+
+def derivda_costo(predicciones, output_layer):
+    return predicciones - output_layer
+
+
+def feed_forward2(input_matrix, weight_HL, weight_OL, bias_HL, bias_OL):
+    # input con peso hidden layer = IHL
+    # activacion de el hidden layer = HLA
+
+    # predicciones de output layer
+    # output con peso = OCP
+
+    # hidden layer
+    IHL = numpy.dot(input_matrix, weight_HL) + bias_HL
+    # cambiar fucnion de activacion si truena
+    HLA = ReLU(IHL)
+
+    # output layer
+    OCP = numpy.dot(HLA, weight_OL) + bias_OL
+    # func act cambiar 
+    predicciones = ReLU(OCP)
+
+    return (IHL, HLA, OCP, predicciones)
+
+
+def descenso_gradiente(m, b, X, Y, rate):
+    deriv_m = 0
+    deriv_b = 0
+    N = len(X)
+    for i in range(N):
+        deriv_m += -2*X[i] * (Y[i] - (m*X[i] + b))
+        deriv_b += -2*(Y[i] - (m*X[i] + b))
+    
+    # restar la derivada en la direccion del decenso
+    m -= (deriv_m / float(N)) * rate
+    b -= (deriv_b / float(N)) * rate
+
+    return m, b

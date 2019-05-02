@@ -16,7 +16,7 @@ numpy.random.seed(69)
 mypath = r"C:\Users\Josro\Desktop\training_all\Circle_new"
 savename = f"circulo.p"
 
-images_to_pickle(mypath, savename)
+# images_to_pickle(mypath, savename)
 images_vector_circulo = pickle.load(open(savename, "rb"))
 
 # ******************************* CUADRADO ************************************
@@ -24,7 +24,7 @@ images_vector_circulo = pickle.load(open(savename, "rb"))
 mypath = r"C:\Users\Josro\Desktop\training_all\Square_new"
 savename = f"cuadrado.p"
 
-images_to_pickle(mypath, savename)
+# images_to_pickle(mypath, savename)
 images_vector_cuadrado = pickle.load(open(savename, "rb"))
 
 # ******************************* HUEVO ************************************
@@ -32,7 +32,7 @@ images_vector_cuadrado = pickle.load(open(savename, "rb"))
 mypath = r"C:\Users\Josro\Desktop\training_all\Egg_new"
 savename = f"huevo.p"
 
-images_to_pickle(mypath, savename)
+# images_to_pickle(mypath, savename)
 images_vector_huevo = pickle.load(open(savename, "rb"))
 
 # ******************************* ARBOL ************************************
@@ -40,7 +40,7 @@ images_vector_huevo = pickle.load(open(savename, "rb"))
 mypath = r"C:\Users\Josro\Desktop\training_all\Tree_new"
 savename = f"arbol.p"
 
-images_to_pickle(mypath, savename)
+# images_to_pickle(mypath, savename)
 images_vector_arbol = pickle.load(open(savename, "rb"))
 
 # ******************************* CASA ************************************
@@ -48,7 +48,7 @@ images_vector_arbol = pickle.load(open(savename, "rb"))
 mypath = r"C:\Users\Josro\Desktop\training_all\House_new"
 savename = f"casa.p"
 
-images_to_pickle(mypath, savename)
+# images_to_pickle(mypath, savename)
 images_vector_casa = pickle.load(open(savename, "rb"))
 
 # ******************************* FELIZ ************************************
@@ -56,7 +56,7 @@ images_vector_casa = pickle.load(open(savename, "rb"))
 mypath = r"C:\Users\Josro\Desktop\training_all\Smile_new"
 savename = f"feliz.p"
 
-images_to_pickle(mypath, savename)
+# images_to_pickle(mypath, savename)
 images_vector_feliz = pickle.load(open(savename, "rb"))
 
 # ******************************* TRISTE ************************************
@@ -64,7 +64,7 @@ images_vector_feliz = pickle.load(open(savename, "rb"))
 mypath = r"C:\Users\Josro\Desktop\training_all\Sad_new"
 savename = f"triste.p"
 
-images_to_pickle(mypath, savename)
+# images_to_pickle(mypath, savename)
 images_vector_triste = pickle.load(open(savename, "rb"))
 
 # ******************************* INTERR ************************************
@@ -72,7 +72,7 @@ images_vector_triste = pickle.load(open(savename, "rb"))
 mypath = r"C:\Users\Josro\Desktop\training_all\Question_new"
 savename = f"qmark.p"
 
-images_to_pickle(mypath, savename)
+# images_to_pickle(mypath, savename)
 images_vector_qmark = pickle.load(open(savename, "rb"))
 
 # ******************************* MICKEY ***********************************
@@ -80,7 +80,7 @@ images_vector_qmark = pickle.load(open(savename, "rb"))
 mypath = r"C:\Users\Josro\Desktop\training_all\Mickey_new"
 savename = f"mickey.p"
 
-images_to_pickle(mypath, savename)
+# images_to_pickle(mypath, savename)
 images_vector_mickey = pickle.load(open(savename, "rb"))
 
 

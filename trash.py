@@ -96,3 +96,13 @@ for epoch in range(5000):
 # test this zhisnit
 result = sigmoid(numpy.dot(images_vector_mickey[150], wo) + bo)
 print(result)
+
+
+lambda es lo que vamos a cambiar basicamente
+
+falta un parcial y un proyecto
+entrega de proyecto 9 mayo
+parcial 16 mayo
+final 3 junio
+
+pocas capas intermedias = bias
