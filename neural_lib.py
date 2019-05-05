@@ -162,3 +162,23 @@ def descenso_gradiente(m, b, X, Y, rate):
     b -= (deriv_b / float(N)) * rate
 
     return m, b
+
+
+def backpropagation2(input_matrix, output_layer, weight_HL, weight_OL, rate, HL, OL, outputs):
+    # utilizar predicciones
+    # IHL, HLA, OCP, predicciones = feed_forward2(input_matrix, weight_HL, weight_OL, bias_HL, bias_OL)
+
+    # Error de la layer de la output layer
+    error_OL = (outputs - output_layer) * derivada_ReLU(OL)
+    # Error de la hidden layer
+    error_HL = error_OL * weight_OL * derivada_ReLU(HL)
+
+    # Derivadas de pesos para weights
+    cost_derivOL = error_OL * ReLU(OL)
+    cost_derivHL = error_HL * ReLU(HL)
+
+    # Actualizar weights
+    weight_OL -= rate * cost_derivOL
+    weight_HL -= rate * cost_derivHL
+
+    return (weight_OL, weight_HL)

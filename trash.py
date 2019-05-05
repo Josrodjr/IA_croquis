@@ -51,6 +51,7 @@ print(result)
 test(0,0,1,0)
 
 # LO VERDADERAMENTE SAD
+feedforward, backpropagation, weight_update, sigmoid
 
 # actual 0 = huevo, 1 = mickey, 2 = feliz
 labels_for_data = numpy.array([0]*251 + [1]*251 + [2]*251)

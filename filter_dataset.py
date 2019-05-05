@@ -34,3 +34,29 @@ def images_to_bmp(path, newpath):
 testpath = r"C:\Users\Josro\Desktop\training_all\Tree"
 newpath = r"C:\Users\Josro\Desktop\training_all\Tree_new"
 images_to_bmp(testpath, newpath)
+
+
+def companieros_retrasados(ivh, ivq, ivt):
+        ivh_new = []
+        ivq_new = []
+        ivt_new = []
+
+        for value in ivh:
+                if value.size == 784:
+                        ivh_new.append(value)
+
+        for value in ivq:
+                if value.size == 784:
+                        ivq_new.append(value)
+
+        for value in ivt:
+                if value.size == 784:
+                        ivt_new.append(value)
+
+        ivh = ivh_new
+        ivq = ivq_new
+        ivt = ivt_new
+
+        pickle.dump(ivh, open("huevo.p", "wb"))
+        pickle.dump(ivq, open("qmark.p", "wb"))
+        pickle.dump(ivt, open("triste.p", "wb"))
