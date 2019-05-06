@@ -120,7 +120,45 @@ matrix_y_size = len(images_vector_arbol) \
     + len(images_vector_qmark) \
     + len(images_vector_triste)
 
+ar = numpy.asarray(images_vector_arbol)
+ca = numpy.asarray(images_vector_casa)
+ci = numpy.asarray(images_vector_circulo)
+cu = numpy.asarray(images_vector_cuadrado)
+fe = numpy.asarray(images_vector_feliz)
+hu = numpy.asarray(images_vector_huevo)
+mi = numpy.asarray(images_vector_mickey)
+qm = numpy.asarray(images_vector_qmark)
+tr = numpy.asarray(images_vector_triste)
+
+complete_dataset = numpy.vstack((ar, ca, ci, cu, fe, hu, mi, qm, tr))
+
+ar_correct = numpy.array([1, 0, 0, 0, 0, 0, 0, 0, 0])
+ca_correct = numpy.array([0, 1, 0, 0, 0, 0, 0, 0, 0])
+ci_correct = numpy.array([0, 0, 1, 0, 0, 0, 0, 0, 0])
+cu_correct = numpy.array([0, 0, 0, 1, 0, 0, 0, 0, 0])
+fe_correct = numpy.array([0, 0, 0, 0, 1, 0, 0, 0, 0])
+hu_correct = numpy.array([0, 0, 0, 0, 0, 1, 0, 0, 0])
+mi_correct = numpy.array([0, 0, 0, 0, 0, 0, 1, 0, 0])
+qm_correct = numpy.array([0, 0, 0, 0, 0, 0, 0, 1, 0])
+tr_correct = numpy.array([0, 0, 0, 0, 0, 0, 0, 0, 1])
+
+ar_correct = numpy.tile(ar_correct, (len(images_vector_arbol), 1))
+ca_correct = numpy.tile(ca_correct, (len(images_vector_casa), 1))
+ci_correct = numpy.tile(ci_correct, (len(images_vector_circulo), 1))
+cu_correct = numpy.tile(cu_correct, (len(images_vector_cuadrado), 1))
+fe_correct = numpy.tile(fe_correct, (len(images_vector_feliz), 1))
+hu_correct = numpy.tile(hu_correct, (len(images_vector_huevo), 1))
+mi_correct = numpy.tile(mi_correct, (len(images_vector_mickey), 1))
+qm_correct = numpy.tile(qm_correct, (len(images_vector_qmark), 1))
+tr_correct = numpy.tile(tr_correct, (len(images_vector_triste), 1))
+
+complete_correct = numpy.vstack((ar_correct, ca_correct, ci_correct, cu_correct, fe_correct, hu_correct, mi_correct, qm_correct, tr_correct))
+
+print(complete_correct.shape)
 
 for iteration in range(NUMBER_OF_ITERATIONS):
     # feedforward the data
     print(matrix_y_size)
+    # print(complete_dataset[1])
+
+# print(complete_dataset[0])
