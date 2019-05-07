@@ -87,10 +87,10 @@ images_vector_mickey = pickle.load(open(savename, "rb"))
 # ***************************** ACTUAL NN **********************************
 
 # welp
-NUMBER_OF_ITERATIONS = 1
+NUMBER_OF_ITERATIONS = 500
 # 28*28 por los bmp
 INPUT_LAYER_SIZE = 784
-HIDDEN_LAYER_SIZE = 10
+HIDDEN_LAYER_SIZE = 9
 OUTPUT_LAYER_SIZE = 9
 
 HL = numpy.full((HIDDEN_LAYER_SIZE), numpy.random.rand(1, 1))
@@ -158,7 +158,12 @@ print(complete_correct.shape)
 
 for iteration in range(NUMBER_OF_ITERATIONS):
     # feedforward the data
-    print(matrix_y_size)
+    IHL, HLA, OCP, predicciones = feed_forward2(complete_dataset, weight_HL, weight_OL, bias_HL, bias_OL)
+    # print(predicciones)
+    # backpropagation
+    weight_OL, weight_HL = backpropagation2(complete_dataset, predicciones, weight_HL, weight_OL, 0.0001, IHL, OCP, complete_correct)
+    print(weight_OL) 
+    # print(matrix_y_size)
     # print(complete_dataset[1])
 
 # print(complete_dataset[0])

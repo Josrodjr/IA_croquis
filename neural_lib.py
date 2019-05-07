@@ -171,13 +171,15 @@ def backpropagation2(input_matrix, output_layer, weight_HL, weight_OL, rate, HL,
     # Error de la layer de la output layer
     error_OL = (outputs - output_layer) * derivada_ReLU(OL)
     # Error de la hidden layer
-    error_HL = error_OL * weight_OL * derivada_ReLU(HL)
+    # error_HL = numpy.dot(error_OL, weight_OL) * derivada_ReLU(HL)
+    error_HL = numpy.dot(numpy.dot(weight_HL, error_OL.T), derivada_ReLU(HL))
 
     # Derivadas de pesos para weights
-    cost_derivOL = error_OL * ReLU(OL)
-    cost_derivHL = error_HL * ReLU(HL)
+    cost_derivOL = numpy.dot(error_OL.T, ReLU(OL))
+    cost_derivHL = numpy.dot(error_HL, weight_OL)
 
     # Actualizar weights
+
     weight_OL -= rate * cost_derivOL
     weight_HL -= rate * cost_derivHL
 
