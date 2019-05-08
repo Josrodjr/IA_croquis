@@ -3,7 +3,7 @@ import matplotlib.pyplot as pyplot
 import pickle
 
 # local library for the neuralnetwork methods
-from neural_lib import images_to_pickle, feed_forward2, backpropagation2
+from neural_lib import images_to_pickle, feed_forward2, backpropagation2, feed_forward3
 
 # set a randomseed
 numpy.random.seed(69)
@@ -95,8 +95,8 @@ OUTPUT_LAYER_SIZE = 9
 
 HL = numpy.full((HIDDEN_LAYER_SIZE), numpy.random.rand(1, 1))
 OL = numpy.full((OUTPUT_LAYER_SIZE), numpy.random.rand(1, 1))
-weight_HL = numpy.random.randn(INPUT_LAYER_SIZE, HIDDEN_LAYER_SIZE) * numpy.sqrt(2.0/INPUT_LAYER_SIZE)
-weight_OL = numpy.random.randn(HIDDEN_LAYER_SIZE, OUTPUT_LAYER_SIZE) * numpy.sqrt(2.0/HIDDEN_LAYER_SIZE)
+weight_HL = numpy.random.randn(INPUT_LAYER_SIZE, HIDDEN_LAYER_SIZE)
+weight_OL = numpy.random.randn(HIDDEN_LAYER_SIZE, OUTPUT_LAYER_SIZE)
 bias_HL = numpy.full((1, HIDDEN_LAYER_SIZE), 0.1)
 bias_OL = numpy.full((1, OUTPUT_LAYER_SIZE), 0.1)
 
@@ -154,16 +154,17 @@ tr_correct = numpy.tile(tr_correct, (len(images_vector_triste), 1))
 
 complete_correct = numpy.vstack((ar_correct, ca_correct, ci_correct, cu_correct, fe_correct, hu_correct, mi_correct, qm_correct, tr_correct))
 
-print(complete_correct.shape)
+# print(complete_correct.shape)
 
 for iteration in range(NUMBER_OF_ITERATIONS):
     # feedforward the data
     IHL, HLA, OCP, predicciones = feed_forward2(complete_dataset, weight_HL, weight_OL, bias_HL, bias_OL)
-    # print(predicciones)
     # backpropagation
-    weight_OL, weight_HL = backpropagation2(complete_dataset, predicciones, weight_HL, weight_OL, 0.0001, IHL, OCP, complete_correct)
-    print(weight_OL) 
-    # print(matrix_y_size)
-    # print(complete_dataset[1])
+    weight_OL, weight_HL = backpropagation2(complete_dataset, predicciones, weight_HL, weight_OL, 0.1, IHL, HLA, OCP, complete_correct)
+    print(weight_OL)
+    # print(predicciones)
+    # print(weight_HL)
+    # RETRY FF
+    # A1, Z2, A2, Z3, A3 = feed_forward3(complete_dataset, HL, OL)
 
 # print(complete_dataset[0])

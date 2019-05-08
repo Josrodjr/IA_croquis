@@ -107,3 +107,7 @@ parcial 16 mayo
 final 3 junio
 
 pocas capas intermedias = bias
+
+
+modelos con mas overfit lambda mas peque;ab
+modelos con menos ooverfil lambda mas pequ;abs

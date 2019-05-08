@@ -164,19 +164,29 @@ def descenso_gradiente(m, b, X, Y, rate):
     return m, b
 
 
-def backpropagation2(input_matrix, output_layer, weight_HL, weight_OL, rate, HL, OL, outputs):
+# rate = alfa
+def backpropagation2(input_matrix, output_layer, weight_HL, weight_OL, rate, HL, HLA, OL, outputs):
     # utilizar predicciones
     # IHL, HLA, OCP, predicciones = feed_forward2(input_matrix, weight_HL, weight_OL, bias_HL, bias_OL)
 
     # Error de la layer de la output layer
-    error_OL = (outputs - output_layer) * derivada_ReLU(OL)
+    # error_OL = (outputs - output_layer) * derivada_ReLU(OL)
+
+    # Error basado en brilliant
+    error_OL = (output_layer - outputs)
+
+    # Error Hidden layer brilliant
+    error_HL = HLA * (1 - HLA) * numpy.dot(error_OL, weight_OL)
+
     # Error de la hidden layer
     # error_HL = numpy.dot(error_OL, weight_OL) * derivada_ReLU(HL)
-    error_HL = numpy.dot(numpy.dot(weight_HL, error_OL.T), derivada_ReLU(HL))
+    # error_HL = numpy.dot(numpy.dot(weight_HL, error_OL.T), derivada_ReLU(HL))
 
     # Derivadas de pesos para weights
-    cost_derivOL = numpy.dot(error_OL.T, ReLU(OL))
-    cost_derivHL = numpy.dot(error_HL, weight_OL)
+    cost_derivOL = HLA.T @ error_OL
+    cost_derivHL = input_matrix.T @ error_HL
+    # cost_derivOL = numpy.dot(error_OL, ReLU(OL))
+    # cost_derivHL = numpy.dot(error_HL, weight_OL)
 
     # Actualizar weights
 
@@ -184,3 +194,17 @@ def backpropagation2(input_matrix, output_layer, weight_HL, weight_OL, rate, HL,
     weight_HL -= rate * cost_derivHL
 
     return (weight_OL, weight_HL)
+
+
+def feed_forward3(X, t1, t2):
+    m, n = X.shape
+    # A1 = numpy.hstack((numpy.ones(m).reshape(m, 1), X))
+    print(X.shape)
+    # matrix multiplication
+    Z2 = X @ t1.T
+    A2 = sigmoid(Z2)
+    m2, _n2 = A2.shape
+    # A2 = numpy.hstack((numpy.ones(m2).reshape(m2, 1), A2))
+    Z3 = A2 @ t2.T 
+    A3 = sigmoid(Z3)
+    return (Z2, A2, Z3, A3)
