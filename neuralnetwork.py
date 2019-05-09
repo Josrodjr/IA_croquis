@@ -87,7 +87,7 @@ images_vector_mickey = pickle.load(open(savename, "rb"))
 # ***************************** ACTUAL NN **********************************
 
 # welp
-NUMBER_OF_ITERATIONS = 500
+NUMBER_OF_ITERATIONS = 5000
 # 28*28 por los bmp
 INPUT_LAYER_SIZE = 784
 HIDDEN_LAYER_SIZE = 9
@@ -97,17 +97,9 @@ HL = numpy.full((HIDDEN_LAYER_SIZE), numpy.random.rand(1, 1))
 OL = numpy.full((OUTPUT_LAYER_SIZE), numpy.random.rand(1, 1))
 weight_HL = numpy.random.randn(INPUT_LAYER_SIZE, HIDDEN_LAYER_SIZE)
 weight_OL = numpy.random.randn(HIDDEN_LAYER_SIZE, OUTPUT_LAYER_SIZE)
-bias_HL = numpy.full((1, HIDDEN_LAYER_SIZE), 0.1)
-bias_OL = numpy.full((1, OUTPUT_LAYER_SIZE), 0.1)
 
-# x = numpy.full((INPUT_LAYER_SIZE), 0.1)
-
-# print(numpy.dot(x, weight_HL))
-# print(OL)
-# print(weight_HL)
-
-# print(len(images_vector_arbol))
-# print(images_vector_arbol[0].size)
+bias_HL = numpy.random.randn(1, HIDDEN_LAYER_SIZE)
+bias_OL = numpy.random.randn(1, OUTPUT_LAYER_SIZE)
 
 # create a new matrix for all the data we colected (and all the vectors containing them)
 matrix_y_size = len(images_vector_arbol) \
@@ -160,11 +152,9 @@ for iteration in range(NUMBER_OF_ITERATIONS):
     # feedforward the data
     IHL, HLA, OCP, predicciones = feed_forward2(complete_dataset, weight_HL, weight_OL, bias_HL, bias_OL)
     # backpropagation
-    weight_OL, weight_HL = backpropagation2(complete_dataset, predicciones, weight_HL, weight_OL, 0.1, IHL, HLA, OCP, complete_correct)
-    print(weight_OL)
-    # print(predicciones)
-    # print(weight_HL)
-    # RETRY FF
-    # A1, Z2, A2, Z3, A3 = feed_forward3(complete_dataset, HL, OL)
+    weight_OL, weight_HL, bias_OL, bias_HL = backpropagation2(complete_dataset, predicciones, weight_HL, weight_OL, 0.0001, HLA, complete_correct, bias_HL, bias_OL)
+    print(predicciones)
 
-# print(complete_dataset[0])
+
+# save the weights and bias after training
+pickle.dump((weight_HL, weight_OL, bias_HL, bias_OL), open("weights_bias.p", "wb"))

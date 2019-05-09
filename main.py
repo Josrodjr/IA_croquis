@@ -2,7 +2,8 @@ from tkinter import Image, Canvas, Tk, Button, YES, BOTH, LEFT, RIGHT, BOTTOM
 import PIL
 from PIL import Image, ImageDraw
 import pickle
-
+import numpy 
+from neural_lib import feed_forward2
 
 def activate_paint(e):
     global lastx, lasty
@@ -48,12 +49,10 @@ def save():
     hsize = int((float(img.size[1]) * float(wpercent)))
     img = img.resize((basewidth, hsize), PIL.Image.ANTIALIAS)
     img.save(filename)
-    # open the png image to transform into bmp
-    # image2 = Image.open(filename)
-    # image2.save('welp.bmp')
-    # image_number += 1
     img_pkl_number += 1
     pickle.dump(img_pkl_number, open("save.p", "wb"))
+    # LINE ONLY TO KEEP IMAGES AT 0
+    restart()
 
 
 def restart():
@@ -64,6 +63,25 @@ def restart():
 def clean():
     cv.delete("all")
     draw.rectangle((0, 0, 560, 560), "white")
+
+
+def compute():
+    # load the "trained" NN weights and biases
+    weight_HL = 0
+    weight_OL = 0
+    bias_HL = 0
+    bias_OL = 0
+    weight_HL, weight_OL, bias_HL, bias_OL = pickle.load(open("weights_bias.p", "rb"))
+    # load the image into a matrix
+    image_vector = []
+    img = Image.open(r'C:\Users\Josro\Documents\GitHub\IA_croquis'+'\\'+'img_0.bmp')
+    gray = img.convert('L')
+    black_white = numpy.asarray(gray).copy()
+    single_array = numpy.concatenate(black_white, axis=None)
+    image_vector.append(single_array)
+    image_matrix = numpy.asarray(image_vector)
+    IHL, HLA, OCP, predicciones = feed_forward2(image_matrix, weight_HL, weight_OL, bias_HL, bias_OL)
+    print(predicciones)
 
 master = Tk()
 master.title("Paint a la tortix")
@@ -89,7 +107,7 @@ btn_save.pack(side=LEFT)
 btn_clean = Button(text="clean", command=clean)
 btn_clean.pack(side=LEFT)
 
-btn_process = Button(text="compute", command=save)
+btn_process = Button(text="compute", command=compute)
 btn_process.pack(side=RIGHT)
 
 btn_restart = Button(text="restart num", command=restart)

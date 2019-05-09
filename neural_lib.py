@@ -165,7 +165,7 @@ def descenso_gradiente(m, b, X, Y, rate):
 
 
 # rate = alfa
-def backpropagation2(input_matrix, output_layer, weight_HL, weight_OL, rate, HL, HLA, OL, outputs):
+def backpropagation2(input_matrix, output_layer, weight_HL, weight_OL, rate, HLA, outputs, b_HL, b_OL):
     # utilizar predicciones
     # IHL, HLA, OCP, predicciones = feed_forward2(input_matrix, weight_HL, weight_OL, bias_HL, bias_OL)
 
@@ -193,7 +193,18 @@ def backpropagation2(input_matrix, output_layer, weight_HL, weight_OL, rate, HL,
     weight_OL -= rate * cost_derivOL
     weight_HL -= rate * cost_derivHL
 
-    return (weight_OL, weight_HL)
+    # UPDATING THE BIAS
+    # except that there's no input from a previous layer
+    # caused by input from a neuron with a fixed activation of 1
+    m = numpy.ones((1, 20418))
+    # b_OL -= rate * m @ derivada_ReLU(outputs)
+    # b_HL -= rate * m @ derivada_ReLU(HLA)
+    b_OL -= rate * derivada_ReLU(b_OL)
+    b_HL -= rate * derivada_ReLU(b_HL)
+    # b_OL -= rate * error_OL
+    # b_HL -= rate * error_HL
+
+    return (weight_OL, weight_HL, b_OL, b_HL)
 
 
 def feed_forward3(X, t1, t2):
