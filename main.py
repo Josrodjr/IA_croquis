@@ -81,7 +81,10 @@ def compute():
     image_vector.append(single_array)
     image_matrix = numpy.asarray(image_vector)
     IHL, HLA, OCP, predicciones = feed_forward2(image_matrix, weight_HL, weight_OL, bias_HL, bias_OL)
-    print(predicciones)
+    check = numpy.array(('arbol', 'casa', 'circulo', 'cuadrado', 'feliz', 'huevo', 'mickey', 'qmark', 'triste'))
+    predicciones = numpy.squeeze(predicciones)
+    solucion = numpy.stack((check, predicciones))
+    print(solucion.T)
 
 master = Tk()
 master.title("Paint a la tortix")
